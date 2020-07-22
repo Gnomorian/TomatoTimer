@@ -18,6 +18,7 @@ QtApplication {
 
     files: [
         "main.cpp",
+        "screenshot.PNG",
         "timerform.cpp",
         "timerform.h",
         "timerform.ui",
