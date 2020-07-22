@@ -10,6 +10,10 @@ TimerForm::TimerForm(QWidget *parent)
     , sessionTimer(this), clockUpdateTimer(this)
 {
     ui->setupUi(this);
+
+    // by default the text box has focus which hides the placeholder text saying what its for, dont want that.
+    ui->btnStart->setFocus();
+
     setupConnections();
 }
 
