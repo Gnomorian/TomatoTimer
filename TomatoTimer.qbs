@@ -1,8 +1,12 @@
 import qbs.FileInfo
 
-QtApplication {
+QtGuiApplication {
     Depends { name: "Qt.widgets" }
     Depends { name: "Qt.multimedia" }
+
+    version: "20200723"
+
+    consoleApplication: false
 
     // The following define makes your compiler emit warnings if you use
     // any Qt feature that has been marked deprecated (the exact warnings
