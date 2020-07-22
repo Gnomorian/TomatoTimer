@@ -6,7 +6,7 @@
 
 TimerForm::TimerForm(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::TimerForm), focusSessionCount(0), sessionRunning(false), paused(false)
+    , ui(new Ui::TimerForm), focusSessionCount(0), countSinceLastLongRest(0), sessionRunning(false), paused(false)
     , sessionTimer(this), clockUpdateTimer(this)
 {
     ui->setupUi(this);
@@ -68,8 +68,9 @@ void TimerForm::stopSession()
     sessionRunning = false;
     ui->btnStart->setText("Start");
     ui->btnStart->setToolTip("Start a 25 focus session");
+    ++focusSessionCount;
 
-    if(++focusSessionCount >= session_count_for_long_break)
+    if(++countSinceLastLongRest >= session_count_for_long_break)
         ui->btnLongBreak->setEnabled(true);
     else
         ui->btnQuickBreak->setEnabled(true);
@@ -88,7 +89,7 @@ void TimerForm::onClockUpdate()
 LongRestLength TimerForm::queryLongBreakLength()
 {
     QMessageBox messageBox(QMessageBox::Icon::Question, "How long?", "How long would you like your long break to be?");
-    messageBox.addButton("15 minnutes", static_cast<QMessageBox::ButtonRole>(LongRestLength::Short15));
+    const auto shortRest = messageBox.addButton("15 minnutes", static_cast<QMessageBox::ButtonRole>(LongRestLength::Short15));
     const auto longRest = messageBox.addButton("30 minutes", static_cast<QMessageBox::ButtonRole>(LongRestLength::Long30));
     messageBox.setWindowModality(Qt::WindowModality::ApplicationModal);
     messageBox.setModal(true);
@@ -97,7 +98,9 @@ LongRestLength TimerForm::queryLongBreakLength()
 
     if(clicked == longRest)
         return LongRestLength::Long30;
-    return LongRestLength::Short15;
+    if(clicked == shortRest)
+        return LongRestLength::Short15;
+    return LongRestLength::Canceled;
 }
 
 void TimerForm::updateClock(int milliseconds)
@@ -141,9 +144,12 @@ void TimerForm::onShortTimerClicked()
 void TimerForm::onLongTimerClicked()
 {
     const auto breakLength = queryLongBreakLength();
-    if(breakLength == LongRestLength::Long30)
+    if(breakLength == LongRestLength::Canceled)
+        return;
+    else if(breakLength == LongRestLength::Long30)
         startSessionTimer(long_break_maximum_length);
-    else
+    else if(breakLength == LongRestLength::Short15)
         startSessionTimer(long_break_minimum_length);
+    countSinceLastLongRest = 0;
 }
 

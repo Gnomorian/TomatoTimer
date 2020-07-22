@@ -10,8 +10,17 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class TimerForm; }
 QT_END_NAMESPACE
 
+/*!
+ * \brief The LongRestLength enum
+ * \list
+ * \li Canceled - closed the form without pressing something\n
+ * \li Short15 - user requested a 15 minute long rest
+ * \li Long30 - user requested a 30 minute long rest
+ * \endlist
+ */
 enum LongRestLength
 {
+    Canceled,
     Short15 = QMessageBox::ButtonRole::NoRole,
     Long30 = QMessageBox::ButtonRole::YesRole
 };
@@ -49,6 +58,7 @@ protected slots:
 private:
     Ui::TimerForm *ui;
     int focusSessionCount;
+    int countSinceLastLongRest;
     bool sessionRunning;
     bool paused;
     QTimer sessionTimer;
