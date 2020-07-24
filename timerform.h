@@ -50,6 +50,7 @@ protected slots:
     void onLongTimerClicked();
     void onClockUpdate();
     void stopSession();
+    void onSettings();
 private:
     Ui::TimerForm *ui;
     int focusSessionCount;

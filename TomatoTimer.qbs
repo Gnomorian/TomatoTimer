@@ -23,9 +23,10 @@ QtGuiApplication {
         "APP_ORGANISATION_DOMAIN=\"Williamc.nz\"",
         "APP_NAME=\"Will's TomatoTimer\""
     ]
-
     files: [
         "main.cpp",
+        "res.rc",
+        "resource.qrc",
         "screenshot.PNG",
         "timerform.cpp",
         "timerform.h",
@@ -36,6 +37,7 @@ QtGuiApplication {
         "tomatosettingsdialog.cpp",
         "tomatosettingsdialog.h",
         "tomatosettingsdialog.ui",
+        "tomato.ico",
     ]
 
     install: true

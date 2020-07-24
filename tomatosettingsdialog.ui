@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>TomatoSettingsDialog</class>
  <widget class="QDialog" name="TomatoSettingsDialog">
@@ -6,13 +7,103 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>178</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/tomato.bmp</normaloff>:/icons/tomato.bmp</iconset>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="3" column="1">
+    <widget class="QSpinBox" name="spinLongBreakMax"/>
+   </item>
+   <item row="1" column="1">
+    <widget class="QSpinBox" name="spinShortBreak"/>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblSessionLength">
+     <property name="text">
+      <string>Focus session length</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lblShortBreak">
+     <property name="text">
+      <string>Short break length</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="lblLongBreakMin">
+     <property name="text">
+      <string>Long break min time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="lblLongBreakMax">
+     <property name="text">
+      <string>Long break max time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="spinSessionLength"/>
+   </item>
+   <item row="2" column="1">
+    <widget class="QSpinBox" name="spinLongBreakMin"/>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="lblLongPrerequisite">
+     <property name="text">
+      <string>Long break prerequisite</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QSpinBox" name="spinLongPrerequisite"/>
+   </item>
+   <item row="5" column="0">
+    <widget class="QPushButton" name="btnSave">
+     <property name="text">
+      <string>Save</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QPushButton" name="btnCancel">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

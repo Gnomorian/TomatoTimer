@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>tomato.bmp</file>
+    </qresource>
+	<qresource prefix="/">
+    <file alias="IDI_ICON1">tomato.ico</file>
+	</qresource>
+</RCC>

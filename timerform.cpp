@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QSound>
 #include "tomatoapplication.h"
+#include "tomatosettingsdialog.h"
 
 TimerForm::TimerForm(QWidget *parent)
     : QMainWindow(parent)
@@ -82,6 +83,12 @@ void TimerForm::stopSession()
         ui->btnQuickBreak->setEnabled(true);
     QSound::play("rooster.wav");
     ui->statusbar->showMessage(QString("You have completed %1 sessions!").arg(focusSessionCount));
+}
+
+void TimerForm::onSettings()
+{
+    auto dialog = new TomatoSettingsDialog;
+    dialog->exec();
 }
 
 void TimerForm::onClockUpdate()
