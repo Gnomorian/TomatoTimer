@@ -28,11 +28,6 @@ enum LongRestLength
 class TimerForm : public QMainWindow
 {
     Q_OBJECT
-    const int session_length = 25;
-    const int short_break_length = 5;
-    const int long_break_minimum_length = 15;
-    const int long_break_maximum_length = 30;
-    const int session_count_for_long_break = 4;
     const QString clockLabelFormat = "<b style=\"font-size:30pt\">%1</b>";
 public:
     TimerForm(QWidget *parent = nullptr);

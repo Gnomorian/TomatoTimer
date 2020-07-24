@@ -3,6 +3,7 @@
 #include <QTime>
 #include <QThread>
 #include <QSound>
+#include "tomatoapplication.h"
 
 TimerForm::TimerForm(QWidget *parent)
     : QMainWindow(parent)
@@ -40,6 +41,7 @@ void TimerForm::startNewSession()
     ui->btnLongBreak->setEnabled(false);
     ui->btnQuickBreak->setEnabled(false);
     QString task = ui->txtCurrentTask->text();
+    int session_length = TomatoApplication::getInstance()->getSessionLength();
     if(task.isEmpty())
         ui->statusbar->showMessage(QString("Working for %2 minutes").arg(session_length));
     else
@@ -74,7 +76,7 @@ void TimerForm::stopSession()
     ui->btnStart->setToolTip("Start a 25 focus session");
     ++focusSessionCount;
 
-    if(++countSinceLastLongRest >= session_count_for_long_break)
+    if(++countSinceLastLongRest >= TomatoApplication::getInstance()->getLongBreakPrerequisite())
         ui->btnLongBreak->setEnabled(true);
     else
         ui->btnQuickBreak->setEnabled(true);
@@ -142,7 +144,7 @@ void TimerForm::onStartClicked()
 
 void TimerForm::onShortTimerClicked()
 {
-    startSessionTimer(short_break_length);
+    startSessionTimer(TomatoApplication::getInstance()->getShortBreakLength());
 }
 
 void TimerForm::onLongTimerClicked()
@@ -151,9 +153,9 @@ void TimerForm::onLongTimerClicked()
     if(breakLength == LongRestLength::Canceled)
         return;
     else if(breakLength == LongRestLength::Long30)
-        startSessionTimer(long_break_maximum_length);
+        startSessionTimer(TomatoApplication::getInstance()->getLongBreakMaximumLength());
     else if(breakLength == LongRestLength::Short15)
-        startSessionTimer(long_break_minimum_length);
+        startSessionTimer(TomatoApplication::getInstance()->getLongBreakMinimumLength());
     countSinceLastLongRest = 0;
 }
 

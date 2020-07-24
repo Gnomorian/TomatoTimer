@@ -18,6 +18,10 @@ QtGuiApplication {
     cpp.defines: [
         "QT_DEPRECATED_WARNINGS",
         /* "QT_DISABLE_DEPRECATED_BEFORE=0x060000" */ // disables all the APIs deprecated before Qt 6.0.0
+        "APP_VERSION=2020-724",
+        "APP_ORGANISATION_NAME=\"Williamc\"",
+        "APP_ORGANISATION_DOMAIN=\"Williamc.nz\"",
+        "APP_NAME=\"Will's TomatoTimer\""
     ]
 
     files: [
@@ -27,6 +31,11 @@ QtGuiApplication {
         "timerform.h",
         "timerform.ui",
         "TomatoTimer_en_NZ.ts",
+        "tomatoapplication.cpp",
+        "tomatoapplication.h",
+        "tomatosettingsdialog.cpp",
+        "tomatosettingsdialog.h",
+        "tomatosettingsdialog.ui",
     ]
 
     install: true
