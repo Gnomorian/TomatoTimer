@@ -84,7 +84,7 @@ int TomatoApplication::getSessionLength()
 int TomatoApplication::getShortBreakLength()
 {
     settings->beginGroup(TimerGroup);
-    short_break_length = settings->value(SessionLength, default_short_break_length).toInt();
+    short_break_length = settings->value(ShortBreakLength, default_short_break_length).toInt();
     settings->endGroup();
     return short_break_length;
 }
@@ -92,7 +92,7 @@ int TomatoApplication::getShortBreakLength()
 int TomatoApplication::getLongBreakMinimumLength()
 {
     settings->beginGroup(TimerGroup);
-    long_break_minimum_length = settings->value(SessionLength, default_long_break_minimum_length).toInt();
+    long_break_minimum_length = settings->value(LongBreakMinimum, default_long_break_minimum_length).toInt();
     settings->endGroup();
     return long_break_minimum_length;
 }
@@ -100,7 +100,7 @@ int TomatoApplication::getLongBreakMinimumLength()
 int TomatoApplication::getLongBreakMaximumLength()
 {
     settings->beginGroup(TimerGroup);
-    long_break_maximum_length = settings->value(SessionLength, default_long_break_maximum_length).toInt();
+    long_break_maximum_length = settings->value(LongBreakMaximum, default_long_break_maximum_length).toInt();
     settings->endGroup();
     return long_break_maximum_length;
 }
@@ -108,7 +108,7 @@ int TomatoApplication::getLongBreakMaximumLength()
 int TomatoApplication::getLongBreakPrerequisite()
 {
     settings->beginGroup(ConditionGroup);
-    long_break_prerequisite = settings->value(SessionLength, default_long_break_prerequisite).toInt();
+    long_break_prerequisite = settings->value(LongBreakPrerequisite, default_long_break_prerequisite).toInt();
     settings->endGroup();
     return long_break_prerequisite;
 }

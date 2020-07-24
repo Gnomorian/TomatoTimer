@@ -79,8 +79,7 @@ void TimerForm::stopSession()
 
     if(++countSinceLastLongRest >= TomatoApplication::getInstance()->getLongBreakPrerequisite())
         ui->btnLongBreak->setEnabled(true);
-    else
-        ui->btnQuickBreak->setEnabled(true);
+    ui->btnQuickBreak->setEnabled(true);
     QSound::play("rooster.wav");
     ui->statusbar->showMessage(QString("You have completed %1 sessions!").arg(focusSessionCount));
 }
@@ -102,8 +101,8 @@ void TimerForm::onClockUpdate()
 LongRestLength TimerForm::queryLongBreakLength()
 {
     QMessageBox messageBox(QMessageBox::Icon::Question, "How long?", "How long would you like your long break to be?");
-    const auto shortRest = messageBox.addButton("15 minnutes", static_cast<QMessageBox::ButtonRole>(LongRestLength::Short15));
-    const auto longRest = messageBox.addButton("30 minutes", static_cast<QMessageBox::ButtonRole>(LongRestLength::Long30));
+    const auto shortRest = messageBox.addButton(QString("%1 minnutes").arg(TomatoApplication::getInstance()->getLongBreakMinimumLength()), static_cast<QMessageBox::ButtonRole>(LongRestLength::Short15));
+    const auto longRest = messageBox.addButton(QString("%1 minutes").arg(TomatoApplication::getInstance()->getLongBreakMaximumLength()), static_cast<QMessageBox::ButtonRole>(LongRestLength::Long30));
     messageBox.setWindowModality(Qt::WindowModality::ApplicationModal);
     messageBox.setModal(true);
     messageBox.exec();
