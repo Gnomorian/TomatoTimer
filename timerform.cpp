@@ -34,7 +34,7 @@ void TimerForm::setupConnections()
     connect(&clockUpdateTimer, SIGNAL(timeout()), this, SLOT(onClockUpdate()));
 }
 
-void TimerForm::startNewSession()
+void TimerForm::doFocusSession()
 {
     sessionRunning = true;
     ui->btnStart->setText("Pause");
@@ -44,9 +44,11 @@ void TimerForm::startNewSession()
     QString task = ui->txtCurrentTask->text();
     int session_length = TomatoApplication::getInstance()->getSessionLength();
     if(task.isEmpty())
-        ui->statusbar->showMessage(QString("Working for %2 minutes").arg(session_length));
+        ui->statusbar->showMessage(QString("Working for %1 minutes").arg(session_length));
     else
         ui->statusbar->showMessage(QString("Working on %1 for %2 minutes").arg(ui->txtCurrentTask->text()).arg(session_length));
+
+    lastSessionType = SessionType::Focus;
     startSessionTimer(session_length);
 }
 
@@ -70,15 +72,41 @@ void TimerForm::resumeSession()
     ui->statusbar->showMessage("Resumed session.");
 }
 
+void TimerForm::doShortBreak()
+{
+    lastSessionType = SessionType::ShortRest;
+    startSessionTimer(TomatoApplication::getInstance()->getShortBreakLength());
+}
+
+void TimerForm::doLongBreak()
+{
+    lastSessionType = SessionType::LongRest;
+    const auto breakLength = queryLongBreakLength();
+    if(breakLength == LongRestLength::Canceled)
+        return;
+    else if(breakLength == LongRestLength::Long30)
+        startSessionTimer(TomatoApplication::getInstance()->getLongBreakMaximumLength());
+    else if(breakLength == LongRestLength::Short15)
+        startSessionTimer(TomatoApplication::getInstance()->getLongBreakMinimumLength());
+    countSinceLastLongRest = 0;
+}
+
 void TimerForm::stopSession()
 {
     sessionRunning = false;
     ui->btnStart->setText("Start");
     ui->btnStart->setToolTip("Start a 25 focus session");
-    ++focusSessionCount;
 
-    if(++countSinceLastLongRest >= TomatoApplication::getInstance()->getLongBreakPrerequisite())
+    if(!lastSessionWasBreak())
+    {
+        ++focusSessionCount;
+        ++countSinceLastLongRest;
+    }
+
+    if(countSinceLastLongRest >= TomatoApplication::getInstance()->getLongBreakPrerequisite())
         ui->btnLongBreak->setEnabled(true);
+    else
+        ui->btnLongBreak->setEnabled(false);
     ui->btnQuickBreak->setEnabled(true);
     QSound::play("rooster.wav");
     ui->statusbar->showMessage(QString("You have completed %1 sessions!").arg(focusSessionCount));
@@ -101,7 +129,7 @@ void TimerForm::onClockUpdate()
 LongRestLength TimerForm::queryLongBreakLength()
 {
     QMessageBox messageBox(QMessageBox::Icon::Question, "How long?", "How long would you like your long break to be?");
-    const auto shortRest = messageBox.addButton(QString("%1 minnutes").arg(TomatoApplication::getInstance()->getLongBreakMinimumLength()), static_cast<QMessageBox::ButtonRole>(LongRestLength::Short15));
+    const auto shortRest = messageBox.addButton(QString("%1 minutes").arg(TomatoApplication::getInstance()->getLongBreakMinimumLength()), static_cast<QMessageBox::ButtonRole>(LongRestLength::Short15));
     const auto longRest = messageBox.addButton(QString("%1 minutes").arg(TomatoApplication::getInstance()->getLongBreakMaximumLength()), static_cast<QMessageBox::ButtonRole>(LongRestLength::Long30));
     messageBox.setWindowModality(Qt::WindowModality::ApplicationModal);
     messageBox.setModal(true);
@@ -120,6 +148,11 @@ void TimerForm::updateClock(int milliseconds)
     const QTime time = QTime(0, 0, 0).addMSecs(milliseconds);
     QString displayTime = QString("%1:%2").arg(time.minute(), 2, 10, QLatin1Char('0')).arg(time.second(), 2, 10, QLatin1Char('0'));
     ui->lblCurrentTime->setText(clockLabelFormat.arg(displayTime));
+}
+
+bool TimerForm::lastSessionWasBreak() const
+{
+    return lastSessionType != SessionType::Focus;
 }
 
 void TimerForm::startSessionTimer(int minutes)
@@ -145,23 +178,16 @@ void TimerForm::onStartClicked()
         else
             pauseSession();
     else
-        startNewSession();
+        doFocusSession();
 }
 
 void TimerForm::onShortTimerClicked()
 {
-    startSessionTimer(TomatoApplication::getInstance()->getShortBreakLength());
+    doShortBreak();
 }
 
 void TimerForm::onLongTimerClicked()
 {
-    const auto breakLength = queryLongBreakLength();
-    if(breakLength == LongRestLength::Canceled)
-        return;
-    else if(breakLength == LongRestLength::Long30)
-        startSessionTimer(TomatoApplication::getInstance()->getLongBreakMaximumLength());
-    else if(breakLength == LongRestLength::Short15)
-        startSessionTimer(TomatoApplication::getInstance()->getLongBreakMinimumLength());
-    countSinceLastLongRest = 0;
+    doLongBreak();
 }
 

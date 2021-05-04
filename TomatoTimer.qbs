@@ -34,6 +34,8 @@ QtGuiApplication {
         "TomatoTimer_en_NZ.ts",
         "tomatoapplication.cpp",
         "tomatoapplication.h",
+        "tomatosettings.cpp",
+        "tomatosettings.h",
         "tomatosettingsdialog.cpp",
         "tomatosettingsdialog.h",
         "tomatosettingsdialog.ui",

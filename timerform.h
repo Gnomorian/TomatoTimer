@@ -25,6 +25,14 @@ enum LongRestLength
     Long30 = QMessageBox::ButtonRole::YesRole
 };
 
+enum SessionType
+{
+    Undefined,
+    LongRest,
+    ShortRest,
+    Focus
+};
+
 class TimerForm : public QMainWindow
 {
     Q_OBJECT
@@ -35,13 +43,14 @@ public:
 protected:
     void setupConnections();
 
-    void startNewSession();
+    void doFocusSession();
     void pauseSession();
     void resumeSession();
     void doShortBreak();
     void doLongBreak();
     LongRestLength queryLongBreakLength();
     void updateClock(int milliseconds);
+    bool lastSessionWasBreak() const;
 
     void startSessionTimer(int minutes);
 protected slots:
@@ -52,11 +61,12 @@ protected slots:
     void stopSession();
     void onSettings();
 private:
-    Ui::TimerForm *ui;
-    int focusSessionCount;
-    int countSinceLastLongRest;
-    bool sessionRunning;
-    bool paused;
+    Ui::TimerForm *ui{nullptr};
+    int focusSessionCount{0};
+    int countSinceLastLongRest{0};
+    bool sessionRunning{false};
+    bool paused{false};
+    SessionType lastSessionType{SessionType::Undefined};
     QTimer sessionTimer;
     QTimer clockUpdateTimer;
 };

@@ -4,11 +4,12 @@
 #include <QApplication>
 #include <QSettings>
 
-const static int default_session_length = 25;
-const static int default_short_break_length = 5;
-const static int default_long_break_minimum_length = 15;
-const static int default_long_break_maximum_length = 30;
-const static int default_long_break_prerequisite = 4;
+using Minutes = int;
+constexpr Minutes default_session_length = 25;
+constexpr Minutes default_short_break_length = 5;
+constexpr Minutes default_long_break_minimum_length = 15;
+constexpr Minutes default_long_break_maximum_length = 30;
+constexpr Minutes default_long_break_prerequisite = 4;
 
 class TomatoApplication : public QApplication
 {
